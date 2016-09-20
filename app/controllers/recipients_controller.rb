@@ -29,11 +29,15 @@ class RecipientsController < ApplicationController
   end
 
   get '/recipients/:id' do
-    if session[:user_id] && @recipient.user_id == session[:user_id]
-      @recipient = Recipient.find_by_id(params[:id])
+    @recipient = Recipient.find_by_id(params[:id])
+    if session[:user_id]
+      if @recipient.user_id == current_user.id
       erb :'recipients/show_recipient'
+      else
+        redirect to '/recipients'
+      end
     else
-      redirect to '/recipients'
+      redirect to '/login'
     end
   end
 
