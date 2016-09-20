@@ -23,17 +23,17 @@ class RecipientsController < ApplicationController
       redirect to '/recipients/new'
     else
       user = User.find_by_id(session[:user_id])
-      @recipient = Recipient.create(:name=> params[:name], :user_id=> user.id)
+      @recipient = Recipient.create(:name=> params[:name], :present=> params[:present], :user_id=> session[:user_id])
       redirect to ("/recipients/#{@recipient.id}")
     end
   end
 
   get '/recipients/:id' do
-    if logged_in?
+    if session[:user_id] && @recipient.user_id == session[:user_id]
       @recipient = Recipient.find_by_id(params[:id])
-      erb :'recipients/show'
+      erb :'recipients/show_recipient'
     else
-      redirect to '/login'
+      redirect to '/recipients'
     end
   end
 
@@ -41,7 +41,7 @@ class RecipientsController < ApplicationController
     if session[:user_id]
       @recipient = Recipient.find_by_id(params[:id])
       if @recipient.user_id == session[:user_id]
-        erb :'recipients/edit'
+        erb :'recipients/edit_recipient'
       else
         redirect to '/recipients'
       end
@@ -56,13 +56,14 @@ class RecipientsController < ApplicationController
     else
       @recipient = Recipient.find_by_id(params[:id])
       @recipient.name = params[:name]
+      @recipient.present = params[:present]
       @recipient.save
       redirect to "/recipients/#{@recipient.id}"
     end
   end
 
   delete '/recipients/:id/delete' do
-    @recipient = recipient.find_by_id(params[:id])
+    @recipient = Recipient.find_by_id(params[:id])
     if logged_in?
       if @recipient.user_id == session[:user_id]
         @recipient.delete

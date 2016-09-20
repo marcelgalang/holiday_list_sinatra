@@ -1,6 +1,5 @@
-<p><%= @recipient.name %></p>
-<p><%= @recipient.present %></p>
-<!-- <p><% if @recipient.purchased == 1 %></p> -->
+<p><%= @recipient.name %><br>
+  <%= @recipient.present %></p>
 
 <form method='post' action='/recipients/<%=@recipient.id%>/delete'>
   <input id='hidden' type= 'hidden' name='_method' value='DELETE'>

@@ -1,4 +1,5 @@
 require "./config/environment"
+require 'pry'
 
 class ApplicationController < Sinatra::Base
 
@@ -9,6 +10,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
+    # binding.pry
     erb :index
   end
 
@@ -18,8 +20,8 @@ class ApplicationController < Sinatra::Base
     end
 
     def current_user
-      User.find(session[:user_id])
-    end
+			User.find(session[:user_id])
+		end
   end
 
 

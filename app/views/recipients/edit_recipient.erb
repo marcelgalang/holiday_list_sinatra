@@ -1,0 +1,8 @@
+<h1>Edit Recipient</h1>
+
+<form method="post" action="/recipients/<%=@recipient.id%>">
+  <input type="hidden" name="_method" value="PATCH">
+  Name:<input type="text" name="name" value="<%= @recipient.name %>"></br>
+  Present:<input type="text" name="present"value="<%= @recipient.present %>"><br>
+  <input type="submit" value="submit">
+</form>
