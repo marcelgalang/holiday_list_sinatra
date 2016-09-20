@@ -1,8 +1,13 @@
 <h1>Welcome, <%=current_user.username %> </h1>
 
-<h3>Here is your Holiday Shopping List</h3>
+<h3>Your Holiday Shopping List:</h3>
 
 <% @recipients.each do |recipient| %>
   <li> <a href="/recipients/<%= recipient.id %>"> <%= recipient.name %> </a></li>
 
 <% end %>
+<br>
+<a href='/logout'>Logout</a>
+<br>
+<a href='/recipients'>Shopping List</a>
+<p>Hello, <%=current_user.username %> </p>
