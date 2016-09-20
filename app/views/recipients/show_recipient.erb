@@ -1,0 +1,10 @@
+<p><%= @recipient.name %></p>
+<p><%= @recipient.present %></p>
+<!-- <p><% if @recipient.purchased == 1 %></p> -->
+
+<form method='post' action='/recipients/<%=@recipient.id%>/delete'>
+  <input id='hidden' type= 'hidden' name='_method' value='DELETE'>
+  <input type='submit' value='Delete Recipient'>
+</form>
+
+<a href='/recipients/<%=@recipient.id%>/edit'>Edit Recipient</a>

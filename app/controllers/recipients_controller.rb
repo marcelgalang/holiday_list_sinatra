@@ -3,8 +3,8 @@ class RecipientsController < ApplicationController
 
   get '/recipients' do
     if logged_in?
-      @recipients = recipient.all
-      erb :'recipients/index'
+      @recipients = Recipient.all
+      erb :'recipients/recipients_index'
     else
       redirect to '/login'
     end
@@ -12,25 +12,25 @@ class RecipientsController < ApplicationController
 
   get '/recipients/new' do
     if logged_in?
-      erb :'recipients/new'
+      erb :'recipients/create_new'
     else
       redirect to '/login'
     end
   end
 
   post '/recipients' do
-    if params[:content] == ""
+    if params[:name] == ""
       redirect to '/recipients/new'
     else
       user = User.find_by_id(session[:user_id])
-      @recipient = recipient.create(:content=> params[:content], :user_id=> user.id)
+      @recipient = Recipient.create(:name=> params[:name], :user_id=> user.id)
       redirect to ("/recipients/#{@recipient.id}")
     end
   end
 
   get '/recipients/:id' do
     if logged_in?
-      @recipient = recipient.find_by_id(params[:id])
+      @recipient = Recipient.find_by_id(params[:id])
       erb :'recipients/show'
     else
       redirect to '/login'
@@ -39,7 +39,7 @@ class RecipientsController < ApplicationController
 
   get '/recipients/:id/edit' do
     if session[:user_id]
-      @recipient = recipient.find_by_id(params[:id])
+      @recipient = Recipient.find_by_id(params[:id])
       if @recipient.user_id == session[:user_id]
         erb :'recipients/edit'
       else
@@ -51,11 +51,11 @@ class RecipientsController < ApplicationController
   end
 
   patch '/recipients/:id' do
-    if params[:content]==""
+    if params[:name]==""
       redirect to "/recipients/#{params[:id]}/edit"
     else
-      @recipient = recipient.find_by_id(params[:id])
-      @recipient.content = params[:content]
+      @recipient = Recipient.find_by_id(params[:id])
+      @recipient.name = params[:name]
       @recipient.save
       redirect to "/recipients/#{@recipient.id}"
     end
