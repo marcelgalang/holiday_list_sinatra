@@ -24,7 +24,6 @@ class RecipientsController < ApplicationController
     else
       user = User.find_by_id(session[:user_id])
       @recipient = recipient.create(:content=> params[:content], :user_id=> user.id)
-    binding.pry
       redirect to ("/recipients/#{@recipient.id}")
     end
   end
@@ -64,7 +63,6 @@ class RecipientsController < ApplicationController
 
   delete '/recipients/:id/delete' do
     @recipient = recipient.find_by_id(params[:id])
-
     if logged_in?
       if @recipient.user_id == session[:user_id]
         @recipient.delete
@@ -76,8 +74,5 @@ class RecipientsController < ApplicationController
         redirect to '/login'
     end
   end
-
-
-
 
 end
