@@ -1,0 +1,17 @@
+<h1>Add a New Recipient</h1>
+
+<form action="/recipients" method="POST">
+  <br><label>Recipient: </label>
+  <input type="text" name="name"></br>
+  <br><label>Present: </label>
+  <input type="text" name="present"></br>
+
+
+ <input type="submit" value="submit">
+</form>
+
+<br>
+<a href='/recipients'>Shopping List</a>
+<p><%=current_user.username%> is logged in.</p>
+<a href='/logout'>Logout</a>
+<br>

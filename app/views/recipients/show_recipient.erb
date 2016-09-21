@@ -1,0 +1,15 @@
+<p>Recipient: <%= @recipient.name %><br>
+  Present: <%= @recipient.present %></p>
+
+<form method='post' action='/recipients/<%=@recipient.id%>/delete'>
+  <input id='hidden' type= 'hidden' name='_method' value='DELETE'>
+  <input type='submit' value='Delete Recipient'>
+</form>
+
+<a href='/recipients/<%=@recipient.id%>/edit'>Edit Recipient</a>
+<br>
+<br>
+<a href='/recipients'>Shopping List</a>
+<p><%=current_user.username%> is logged in.</p>
+<a href='/logout'>Logout</a>
+<br>
