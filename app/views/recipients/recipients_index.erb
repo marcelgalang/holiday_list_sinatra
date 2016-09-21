@@ -1,13 +1,18 @@
-<h1>Welcome, <%=current_user.username %> </h1>
+<h1>Welcome, <%=current_user.username %>! </h1>
 
-<h3>Your Holiday Shopping List:</h3>
+You may only see the recipients and presents on your holiday list. Otherwise, what's the fun in gift-giving?
+<h3>Holiday Shopping List:</h3>
+
 
 <% @recipients.each do |recipient| %>
+  <% if recipient.user_id == current_user.id %>
   <li> <a href="/recipients/<%= recipient.id %>"> <%= recipient.name %> </a></li>
-
+  <%else%><li>Naughty! You can't see this gift!</li>
+  <%end%>
 <% end %>
-<br>
-<a href='/logout'>Logout</a>
+
 <br>
 <a href='/recipients'>Shopping List</a>
-<p>Hello, <%=current_user.username %> </p>
+<p><%=current_user.username%> is logged in.</p>
+<a href='/logout'>Logout</a>
+<br>
