@@ -19,12 +19,11 @@ class RecipientsController < ApplicationController
   end
 
   post '/recipients' do
-    if params[:name] == ""
-      redirect to '/recipients/new'
-    else
-      user = User.find_by_id(session[:user_id])
-      @recipient = Recipient.create(:name=> params[:name], :present=> params[:present], :user_id=> session[:user_id])
+    if user = User.find_by_id(session[:user_id])
+      @recipient = Recipient.create(params)
       redirect to ("/recipients/#{@recipient.id}")
+    else
+      redirect to '/recipients/new'
     end
   end
 
@@ -55,16 +54,18 @@ class RecipientsController < ApplicationController
   end
 
   patch '/recipients/:id' do
-    if params[:name]==""
-      redirect to "/recipients/#{params[:id]}/edit"
+    @recipient = recipient.find_by_id(params[:id])
+    if
+    if @recipient.update(name: params[:name], present: params[:present])
+        redirect to "/recipients/#{@recipient.id}"
+      else
+        redirect to "/recipients/#{@recipient.id}/edit"
+      end
     else
-      @recipient = Recipient.find_by_id(params[:id])
-      @recipient.name = params[:name]
-      @recipient.present = params[:present]
-      @recipient.save
-      redirect to "/recipients/#{@recipient.id}"
+      redirect to "/recipients/#{params[:id]}/edit"
     end
   end
+
 
   delete '/recipients/:id/delete' do
     @recipient = Recipient.find_by_id(params[:id])
