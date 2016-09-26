@@ -1,5 +1,8 @@
 require 'pry'
+require 'rack-flash'
 class RecipientsController < ApplicationController
+
+  use Rack::Flash
 
   get '/recipients' do
     if logged_in?
@@ -19,8 +22,11 @@ class RecipientsController < ApplicationController
   end
 
   post '/recipients' do
-    if user = User.find_by_id(session[:user_id])
-      @recipient = Recipient.create(params)
+    if
+      # user = User.find_by_id(session[:user_id])
+      @recipient = current_user.recipients.create(params)
+
+      flash[:message] = "Successfully created recipient."
       redirect to ("/recipients/#{@recipient.id}")
     else
       redirect to '/recipients/new'
@@ -29,32 +35,30 @@ class RecipientsController < ApplicationController
 
   get '/recipients/:id' do
     @recipient = Recipient.find_by_id(params[:id])
-    if session[:user_id]
-      if @recipient.user_id == current_user.id
+    if logged_in?
+      @recipient = Recipient.find_by_id(params[:id])
       erb :'recipients/show_recipient'
-      else
-        redirect to '/recipients'
-      end
     else
       redirect to '/login'
     end
   end
 
   get '/recipients/:id/edit' do
-    if session[:user_id]
+    # if
       @recipient = Recipient.find_by_id(params[:id])
-      if @recipient.user_id == session[:user_id]
+      if logged_in?
+       @recipient.user_id == current_user
         erb :'recipients/edit_recipient'
       else
         redirect to '/recipients'
       end
-    else
-      redirect to '/login'
-    end
+    # else
+    #   redirect to '/login'
+    # end
   end
 
   patch '/recipients/:id' do
-    @recipient = recipient.find_by_id(params[:id])
+    @recipient = Recipient.find_by_id(params[:id])
     if
     if @recipient.update(name: params[:name], present: params[:present])
         redirect to "/recipients/#{@recipient.id}"
@@ -72,6 +76,7 @@ class RecipientsController < ApplicationController
     if logged_in?
       if @recipient.user_id == session[:user_id]
         @recipient.delete
+        flash[:message] = "Successfully deleted recipient."
         redirect to '/recipients'
       else
         redirect to '/recipients'
