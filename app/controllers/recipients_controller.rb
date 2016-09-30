@@ -2,7 +2,7 @@ require 'pry'
 require 'rack-flash'
 class RecipientsController < ApplicationController
 
-  use Rack::Flash
+
 
   get '/recipients' do
     if logged_in?
@@ -26,7 +26,6 @@ class RecipientsController < ApplicationController
       # user = User.find_by_id(session[:user_id])
       @recipient = current_user.recipients.create(params)
 
-      flash[:message] = "Successfully created recipient."
       redirect to ("/recipients/#{@recipient.id}")
     else
       redirect to '/recipients/new'
