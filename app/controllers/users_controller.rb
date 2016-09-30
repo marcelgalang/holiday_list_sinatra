@@ -9,13 +9,11 @@ class UsersController < ApplicationController
   end
 
   post '/signup' do
-    if params[:username] == "" || params[:password] == ""
-      redirect to '/signup'
-    else
-      @user = User.new(:username => params[:username], :password => params[:password])
-      @user.save
+    if @user = User.create(params)
       session[:user_id] = @user.id
       redirect to '/recipients'
+    else
+      redirect tp '/signup'
     end
   end
 
@@ -34,17 +32,13 @@ class UsersController < ApplicationController
 
       redirect  '/recipients'
     else
-      redirect to '/signup'
+      redirect to '/login'
     end
   end
 
   get '/logout' do
-    if session[:user_id] != nil
       session.clear
       redirect to '/login'
-    else
-      redirect to '/'
-    end
   end
 
 end
